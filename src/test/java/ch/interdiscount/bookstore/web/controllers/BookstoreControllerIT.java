@@ -1,7 +1,6 @@
 package ch.interdiscount.bookstore.web.controllers;
 
 import io.restassured.RestAssured;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +41,7 @@ public class BookstoreControllerIT {
 					.extract()
 					.as(Book.class);
 
-		assertThat(book.getId()).isEqualTo("2");
+		assertThat(book.getIsbn()).isEqualTo("2");
 	}
 
 	@Test

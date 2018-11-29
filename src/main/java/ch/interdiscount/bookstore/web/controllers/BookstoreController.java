@@ -30,13 +30,12 @@ public class BookstoreController {
 		return Arrays.asList(
 				getBook("2")
 		);
-
 	}
 
 	private Book getBook(String id) {
 
 		return Book.builder()
-				.id(id)
+				.isbn(id)
 				.build();
 	}
 }

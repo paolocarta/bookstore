@@ -31,7 +31,7 @@ public class BookstoreControllerUnitTest {
 				bookstoreFacade.getBookById("2"))
 				.willReturn(
 						Book.builder()
-								.id("2")
+								.isbn("2")
 								.build()
 				);
 
@@ -41,7 +41,7 @@ public class BookstoreControllerUnitTest {
 						.accept(MediaType.APPLICATION_JSON)
 				)
 				.andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(2));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(2));
 
 	}
 
