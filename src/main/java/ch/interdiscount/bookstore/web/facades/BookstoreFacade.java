@@ -2,6 +2,8 @@ package ch.interdiscount.bookstore.web.facades;
 
 import ch.interdiscount.bookstore.repositories.BookEntity;
 import ch.interdiscount.bookstore.repositories.BookRepository;
+import ch.interdiscount.bookstore.services.client.BookInventory;
+import ch.interdiscount.bookstore.services.client.BookInventoryClient;
 import ch.interdiscount.bookstore.web.controllers.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,13 +18,17 @@ public class BookstoreFacade {
 	@Autowired
 	private BookRepository bookRepository;
 
+	@Autowired
+	private BookInventoryClient bookInventoryClient;
+
 	public Book getBookById(final String isbn) {
 
 		BookEntity bookEntity =
 				bookRepository.findById(isbn)
 						.orElse(getEmptyBook());
 
-		return convertToBookDto(bookEntity);
+		Book book = convertToBookDto(bookEntity);
+		return populateBookInventory(book);
 	}
 
 	public List<Book> getAllBooks() {
@@ -62,6 +68,15 @@ public class BookstoreFacade {
 				.title(bookEntity.getTitle())
 				.build();
 	}
+
+
+	private Book populateBookInventory(final Book book) {
+
+		BookInventory bookInventory = bookInventoryClient.getBookInventory(book.getIsbn());
+		book.setQuantity(bookInventory.getQuantity());
+		return book;
+	}
+
 
 
 
