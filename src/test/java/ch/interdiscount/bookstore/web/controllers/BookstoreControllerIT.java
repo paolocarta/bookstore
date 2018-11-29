@@ -10,6 +10,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -46,13 +48,17 @@ public class BookstoreControllerIT {
 	@Test
 	public void test_get_all_books() {
 
-
+	List<Book> books =
 				RestAssured
 						.given()
 						.when()
 						.get("/books")
 						.then()
-						.statusCode(HttpStatus.OK.value());
+						.statusCode(HttpStatus.OK.value())
+						.extract()
+						.jsonPath().getList(".", Book.class);
+
+	assertThat(books).isNotEmpty();
 
 
 	}
