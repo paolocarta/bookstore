@@ -10,6 +10,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.api.Assertions.*;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,7 +40,19 @@ public class BookstoreControllerIT {
 					.extract()
 					.as(Book.class);
 
-		Assertions.assertThat(book.getId()).isEqualTo("2");
+		assertThat(book.getId()).isEqualTo("2");
+	}
+
+	@Test
+	public void test_get_all_books() {
+
+
+				RestAssured
+						.given()
+						.when()
+						.get("/books")
+						.then()
+						.statusCode(HttpStatus.OK.value());
 
 
 	}
