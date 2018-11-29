@@ -25,6 +25,30 @@ public class BookstoreFacade {
 		return convertToBookDto(bookEntity);
 	}
 
+	public List<Book> getAllBooks() {
+
+		List<BookEntity> bookEntities = bookRepository.findAll();
+
+		return bookEntities.stream()
+				.map(this::convertToBookDto)
+				.collect(Collectors.toList());
+	}
+
+	public void insert(final Book book) {
+
+		BookEntity bookEntity = convertIntoEntity(book);
+		bookRepository.save(bookEntity);
+	}
+
+	private BookEntity convertIntoEntity(final Book book) {
+
+		return BookEntity.builder()
+				.isbn(book.getIsbn())
+				.title(book.getTitle())
+				.author(book.getAuthor())
+				.build();
+	}
+
 	private BookEntity getEmptyBook() {
 
 		return BookEntity.builder().build();
@@ -39,12 +63,6 @@ public class BookstoreFacade {
 				.build();
 	}
 
-	public List<Book> getAllBooks() {
 
-		List<BookEntity> bookEntities = bookRepository.findAll();
 
-		return bookEntities.stream()
-				.map(this::convertToBookDto)
-				.collect(Collectors.toList());
-	}
 }

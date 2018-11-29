@@ -77,7 +77,7 @@ public class BookstoreControllerIT {
 				.when()
 					.post("/books")
 				.then()
-					.statusCode(HttpStatus.OK.value());
+					.statusCode(HttpStatus.CREATED.value());
 
 	}
 }
