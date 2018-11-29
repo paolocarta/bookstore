@@ -1,10 +1,13 @@
 package ch.interdiscount.bookstore.web.controllers;
 
+import ch.interdiscount.bookstore.repositories.BookEntity;
+import ch.interdiscount.bookstore.repositories.BookRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,8 @@ public class BookstoreControllerIT {
 
 	@LocalServerPort
 	private int port;
+	@Autowired
+	private BookRepository bookRepository;
 
 	@Before
 	public void setUp() throws Exception {
@@ -78,6 +83,12 @@ public class BookstoreControllerIT {
 					.post("/books")
 				.then()
 					.statusCode(HttpStatus.CREATED.value());
+
+		BookEntity bookEntity =
+				bookRepository.findById(book.getIsbn())
+						.orElse(BookEntity.builder().build());
+
+		assertThat(bookEntity.getIsbn()).isEqualTo(book.getIsbn());
 
 	}
 }
