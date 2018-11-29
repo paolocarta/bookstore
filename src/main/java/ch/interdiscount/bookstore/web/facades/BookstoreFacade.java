@@ -13,10 +13,11 @@ public class BookstoreFacade {
 	@Autowired
 	private BookRepository bookRepository;
 
-	public Book getBookById(final String id) {
+	public Book getBookById(final String isbn) {
 
 		BookEntity bookEntity =
-				bookRepository.findById(id)
+
+				bookRepository.findById(isbn)
 						.orElse(getEmptyBook());
 
 		return convertToBookDto(bookEntity);

@@ -23,13 +23,11 @@ public class BookstoreControllerIT {
 
 	@Before
 	public void setUp() throws Exception {
-
 		RestAssured.port = port;
-
 	}
 
 	@Test
-	public void test_get_book_by_id() {
+	public void test_get_book_by_isbn() {
 
 		Book book =
 			RestAssured

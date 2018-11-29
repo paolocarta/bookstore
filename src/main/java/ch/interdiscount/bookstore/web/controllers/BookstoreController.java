@@ -19,9 +19,9 @@ public class BookstoreController {
 	private BookstoreFacade bookstoreFacade;
 
 	@GetMapping("/{id}")
-	public Book getBookById(@PathVariable String id) {
+	public Book getBookById(@PathVariable String isbn) {
 
-		return bookstoreFacade.getBookById(id);
+		return bookstoreFacade.getBookById(isbn);
 	}
 
 	@GetMapping
