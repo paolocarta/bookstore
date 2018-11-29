@@ -1,6 +1,7 @@
 package ch.interdiscount.bookstore.web.controllers;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,11 +34,11 @@ public class BookstoreControllerIT {
 			RestAssured
 					.given()
 					.when()
-					.get("/books/2")
+						.get("/books/2")
 					.then()
-					.statusCode(HttpStatus.OK.value())
-					.extract()
-					.as(Book.class);
+						.statusCode(HttpStatus.OK.value())
+						.extract()
+						.as(Book.class);
 
 		assertThat(book.getIsbn()).isEqualTo("2");
 	}
@@ -45,18 +46,38 @@ public class BookstoreControllerIT {
 	@Test
 	public void test_get_all_books() {
 
-	List<Book> books =
+		List<Book> books =
 				RestAssured
 						.given()
 						.when()
-						.get("/books")
+							.get("/books")
 						.then()
-						.statusCode(HttpStatus.OK.value())
-						.extract()
-						.jsonPath().getList(".", Book.class);
+							.statusCode(HttpStatus.OK.value())
+							.extract()
+							.jsonPath().getList(".", Book.class);
 
-	assertThat(books).isNotEmpty();
+		assertThat(books).isNotEmpty();
+		assertThat(books).hasSize(2);
+	}
 
+	@Test
+	public void test_insert_book() {
+
+		Book book = Book.builder()
+				.isbn("3")
+				.author("pat")
+				.title("relational dbs")
+				.build();
+
+		RestAssured
+				.given()
+					.contentType(ContentType.JSON)
+					.accept(ContentType.JSON)
+					.body(book)
+				.when()
+					.post("/books")
+				.then()
+					.statusCode(HttpStatus.OK.value());
 
 	}
 }

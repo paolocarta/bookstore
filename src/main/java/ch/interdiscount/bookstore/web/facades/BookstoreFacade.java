@@ -6,6 +6,9 @@ import ch.interdiscount.bookstore.web.controllers.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class BookstoreFacade {
@@ -16,7 +19,6 @@ public class BookstoreFacade {
 	public Book getBookById(final String isbn) {
 
 		BookEntity bookEntity =
-
 				bookRepository.findById(isbn)
 						.orElse(getEmptyBook());
 
@@ -35,5 +37,14 @@ public class BookstoreFacade {
 				.author(bookEntity.getAuthor())
 				.title(bookEntity.getTitle())
 				.build();
+	}
+
+	public List<Book> getAllBooks() {
+
+		List<BookEntity> bookEntities = bookRepository.findAll();
+
+		return bookEntities.stream()
+				.map(this::convertToBookDto)
+				.collect(Collectors.toList());
 	}
 }

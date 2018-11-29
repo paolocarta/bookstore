@@ -2,12 +2,14 @@ package ch.interdiscount.bookstore.web.controllers;
 
 import ch.interdiscount.bookstore.web.facades.BookstoreFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -18,7 +20,7 @@ public class BookstoreController {
 	@Autowired
 	private BookstoreFacade bookstoreFacade;
 
-	@GetMapping("/{id}")
+	@GetMapping("/{isbn}")
 	public Book getBookById(@PathVariable String isbn) {
 
 		return bookstoreFacade.getBookById(isbn);
@@ -27,15 +29,15 @@ public class BookstoreController {
 	@GetMapping
 	public List<Book> getAllBooks() {
 
-		return Arrays.asList(
-				getBook("2")
-		);
+		return bookstoreFacade.getAllBooks();
 	}
 
-	private Book getBook(String id) {
+	@PostMapping
+	@ResponseStatus(code = HttpStatus.OK)
+	public void insertBook(Book book) {
 
-		return Book.builder()
-				.isbn(id)
-				.build();
+		
 	}
+
+
 }
